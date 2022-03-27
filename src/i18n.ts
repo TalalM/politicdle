@@ -5,7 +5,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
-      placeholder: "Country, territory...",
+      placeholder: "Country",
       guess: "Guess",
       share: "Share",
       showOnGoogleMaps: "👀 on Google Maps",
@@ -58,7 +58,7 @@ const resources = {
   },
   fr: {
     translation: {
-      placeholder: "Pays, territoires...",
+      placeholder: "Pays",
       guess: "Deviner",
       share: "Partager",
       showOnGoogleMaps: "👀 sur Google Maps",
@@ -112,7 +112,7 @@ const resources = {
   },
   es: {
     translation: {
-      placeholder: "País, Territorios...",
+      placeholder: "País",
       guess: "Adivinar",
       share: "Compartir",
       showOnGoogleMaps: "👀 en Google Maps",
@@ -144,7 +144,7 @@ const resources = {
   },
   eu: {
     translation: {
-      placeholder: "Estatua, herrialdeak...",
+      placeholder: "Estatua",
       guess: "Asmatu",
       share: "Elkarbanatu",
       showOnGoogleMaps: "👀 Google Maps-en",

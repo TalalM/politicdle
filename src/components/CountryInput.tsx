@@ -34,7 +34,7 @@ export function CountryInput({
               sanitizeCountryName(countryName).includes(
                 sanitizeCountryName(value)
               )
-            )
+            ).sort()
         )
       }
       onSuggestionsClearRequested={() => setSuggestions([])}
