@@ -1,6 +1,6 @@
 # POLITICDLE
 
-Play this political wordle here: https://www.flagdle.app !
+Play this political wordle here: https://politicdle.herokuapp.com/ !
 
 ## Resources used:
 

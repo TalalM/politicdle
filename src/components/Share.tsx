@@ -66,7 +66,7 @@ export function Share({
       })
       .join("\n");
 
-    return [title, guessString, "https://www.flagdle.app"].join("\n");
+    return [title, guessString, "https://politicdle.herokuapp.com/"].join("\n");
   }, [dayString, guesses, hideImageMode, rotationMode, theme]);
 
   return (
