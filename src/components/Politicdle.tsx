@@ -1,9 +1,9 @@
 import React from "react";
 
-export function Flagdle() {
+export function Politicdle() {
   return (
     <span className="font-bold">
-      FLAG<span className="text-green-600">D</span>LE
+      POLITIC<span className="text-green-600">D</span>LE
     </span>
   );
 }

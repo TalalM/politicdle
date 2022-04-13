@@ -16,13 +16,13 @@ type AnimationState = "NOT_STARTED" | "RUNNING" | "ENDED";
 interface GuessRowProps {
   guess?: Guess;
   settingsData: SettingsData;
-  countryInputRef?: React.RefObject<HTMLInputElement>;
+  cityInputRef?: React.RefObject<HTMLInputElement>;
 }
 
 export function GuessRow({
   guess,
   settingsData,
-  countryInputRef,
+  cityInputRef,
 }: GuessRowProps) {
   const { distanceUnit, theme } = settingsData;
   const proximity = guess != null ? computeProximityPercent(guess.distance) : 0;
@@ -49,10 +49,10 @@ export function GuessRow({
   }, [guess]);
 
   const handleClickOnEmptyRow = useCallback(() => {
-    if (countryInputRef?.current != null) {
-      countryInputRef?.current.focus();
+    if (cityInputRef?.current != null) {
+      cityInputRef?.current.focus();
     }
-  }, [countryInputRef]);
+  }, [cityInputRef]);
 
   switch (animationState) {
     case "NOT_STARTED":

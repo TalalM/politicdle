@@ -1,7 +1,7 @@
 import { Guesses } from "../Guesses";
 import { Panel } from "./Panel";
 import React from "react";
-import { Flagdle } from "../Flagdle";
+import { Politicdle } from "../Politicdle";
 import { formatDistance } from "../../domain/geography";
 import { SettingsData } from "../../hooks/useSettings";
 import { Twemoji } from "@teuteuf/react-emoji-render";
@@ -14,37 +14,41 @@ interface InfosProps {
 
 export function Infos({ isOpen, close, settingsData }: InfosProps) {
   return (
-    <Panel title="How to play" isOpen={isOpen} close={close}>
+    <Panel title="Comment jouer" isOpen={isOpen} close={close}>
       <div className="space-y-3 text-justify border-b-2 border-gray-200 pb-3 mb-3">
         <div>
-          Guess the <Flagdle /> in 6 guesses.
+          {" "}
+          Devinez le <Politicdle /> en 8 essais.
         </div>
-        <div>Each guess must be a valid country.</div>
         <div>
-          After each guess, you will have the distance, the direction and the
-          proximity from your guess and the target country.
+          Il s'agit de deviner la ville qui a eu les résultats affichés lors du premier tour de
+          l'élection présidentielle de 2022.
+        </div>
+        <div>Chaque essai doit être une ville valide.
+          Seules les villes ayant eu au moins 10.000 votes exprimés sont valides (pour information, il y en a 459).<br/>
+          Après chaque essai, vous aurez la distance, la direction et la
+          proximité entre votre essai et la ville cible.
         </div>
       </div>
       <div className="space-y-3 text-justify border-b-2 border-gray-200 pb-3 mb-3">
-        <div className="font-bold">Examples</div>
+        <div className="font-bold">Exemples</div>
         <div>
           <Guesses
             rowCount={1}
             guesses={[
               {
-                name: "Chile",
-                direction: "NE",
-                distance: 13_557_000,
+                name: "Clermont-Ferrand",
+                direction: "NW",
+                distance: 369_000,
               },
             ]}
             settingsData={settingsData}
           />
           <div className="my-2">
-            Your guess <span className="uppercase font-bold">Chile</span> is{" "}
-            {formatDistance(13557000, settingsData.distanceUnit)} away from the
-            target country, the target country is in the North-East direction
-            and you have a only 32% of proximity because it&apos;s quite far
-            away!
+            Votre essai <span className="uppercase font-bold">Clermont-Ferrand</span> est à{" "}
+            {formatDistance(369_000, settingsData.distanceUnit)} de la ville
+            cible, la ville cible se trouve dans la direction Nord-Ouest et vous
+            avez une proximité de 79% !
           </div>
         </div>
         <div>
@@ -52,18 +56,19 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
             rowCount={1}
             guesses={[
               {
-                name: "Finland",
-                direction: "SE",
-                distance: 3_206_000,
+                name: "Amiens",
+                direction: "SW",
+                distance: 113_000,
               },
             ]}
             settingsData={settingsData}
           />
           <div className="my-2">
-            Your second guess{" "}
-            <span className="uppercase font-bold">Finland</span> is getting
-            closer! {formatDistance(3206000, settingsData.distanceUnit)} away,
-            South-East direction and 84%!
+            Votre second essai{" "}
+            <span className="uppercase font-bold">Amiens</span> est plus
+            proche ! La bonne réponse est à{" "}
+            {formatDistance(113_000, settingsData.distanceUnit)}, au Sud-Ouest
+            et la proximité est de 93%!
           </div>
         </div>
         <div>
@@ -71,7 +76,7 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
             rowCount={1}
             guesses={[
               {
-                name: "Lebanon",
+                name: "Poissy",
                 direction: "N",
                 distance: 0,
               },
@@ -79,39 +84,36 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
             settingsData={settingsData}
           />
           <div className="my-2">
-            Next guess, <span className="uppercase font-bold">Lebanon</span>,
-            it&apos;s the country to guess! Congrats!{" "}
+            Prochain essai, <span className="uppercase font-bold">Poissy</span>,
+            c&apos;est la ville à deviner ! Bien joué !{" "}
             <Twemoji text="🎉" options={{ className: "inline-block" }} />
           </div>
         </div>
       </div>
       <div className="space-y-3 text-justify border-b-2 border-gray-200 pb-3 mb-3 font-bold">
-        A new <Flagdle /> will be available every day!
+        Un nouveau <Politicdle /> sera disponible toutes les 3 heures !
       </div>
       <div className="space-y-3 text-justify border-b-2 border-gray-200 pb-3 mb-3">
         <div>
-          <Flagdle /> has no FAQ but you can check the {" "}
+          <Politicdle /> n'a pas de FAQ mais si vous avez des questions, vous pouvez me contacter sur {" "}
           <a
             className="underline"
-            href="https://worldle.notion.site/Worldle-b84ab0f002e34866980a4d47cf9291b7"
+            href="https://twitter.com/talalmazroui"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Worldle FAQ
-          </a>
-          !
+            @talalmazroui
+          </a>.
         </div>
       </div>
       <div className="space-y-3 text-justify border-b-2 border-gray-200 pb-3 mb-3">
-        <Flagdle /> is <b>heavily</b> inspired by{" "}
+        <Politicdle /> est <b>fortement</b> inspiré de{" "}
         <a
           className="underline"
           href="http://worldle.teuteuf.fr/"
           target="_blank"
           rel="noopener noreferrer"
-        >
-          Worldle
-        </a>{" "} created by {" "}
+        >Worldle</a>{" "} créé par {" "}
         <a
           className="underline"
           href="https://twitter.com/teuteuf"
@@ -119,11 +121,11 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
           rel="noopener noreferrer"
         >
           @teuteuf
-        </a>. But on <Flagdle />, you must guess the country by its flag, not its shape!
+        </a>.
       </div>
       <div className="space-y-3 text-justify pb-3">
         <div>
-          Made by{" "}
+          Fait par{" "}
           <a
             className="underline"
             href="https://twitter.com/talalmazroui"
@@ -135,16 +137,16 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
           - (
           <a
             className="underline"
-            href="https://github.com/TalalM/flagdle/"
+            href="https://github.com/TalalM/politicdle/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            source code
+            code source
           </a>
           )
         </div>
         <div>
-          You can check my other projects here:{" "}
+          Vous pouvez aller voir mes autres projets du même type ici :{" "}
           <a
             className="underline"
             href="https://www.countrydle.com"
@@ -152,10 +154,26 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
             rel="noopener noreferrer"
           >
             Countrydle
+          </a>, {" "}
+          <a
+            className="underline"
+            href="https://www.flagdle.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Flagdle
+          </a>, {" "}
+          <a
+            className="underline"
+            href="https://www.stadiumdle.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Stadiumdle
           </a>
         </div>
         <div>
-          Want to support?{" "}
+          Vous voulez me soutenir ?{" "}
           <a
             className="underline"
             href="https://www.ko-fi.com/elpastoristo"
@@ -163,7 +181,7 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
             rel="noopener noreferrer"
           >
             <Twemoji
-              text="Buy me a coffee! ☕"
+              text="Offrez moi un café ! ☕"
               options={{ className: "inline-block" }}
             />
           </a>

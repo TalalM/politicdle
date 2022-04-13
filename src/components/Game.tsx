@@ -8,11 +8,11 @@ import React, {
 } from "react";
 import { toast } from "react-toastify";
 import {
-  countries,
-  getCountryName,
-  sanitizeCountryName,
-} from "../domain/countries";
-import { CountryInput } from "./CountryInput";
+  cities,
+  getCityName,
+  sanitizeCityName,
+} from "../domain/cities";
+import { CityInput } from "./CityInput";
 import * as geolib from "geolib";
 import { Share } from "./Share";
 import { Guesses } from "./Guesses";
@@ -21,8 +21,30 @@ import { SettingsData } from "../hooks/useSettings";
 import { useMode } from "../hooks/useMode";
 import { getDayString, useTodays } from "../hooks/useTodays";
 import { Twemoji } from "@teuteuf/react-emoji-render";
+import { City } from "../domain/cities";
+import { Direction } from "../domain/geography";
 
-const MAX_TRY_COUNT = 6;
+const MAX_TRY_COUNT = 8;
+
+interface Person {
+        name: string;
+        firstName: string;
+}
+
+const candidates: Person[] = [
+        {name:"MACRON", firstName:"Emmanuel"},
+        {name:"LE PEN", firstName:"Marine"},
+        {name:"MÉLENCHON", firstName:"Jean-luc"},
+        {name:"ZEMMOUR", firstName:"Eric"},
+        {name:"JADOT", firstName:"Yannick"},
+        {name:"PÉCRESSE", firstName:"Valérie"},
+        {name:"LASSALLE", firstName:"Jean"},
+        {name:"ROUSSEL", firstName:"Fabien"},
+        {name:"DUPONT-AIGNAN", firstName:"Nicolas"},
+        {name:"POUTOU", firstName:"Philippe"},
+        {name:"HIDALGO", firstName:"Anne"},
+        {name:"Arthaud", firstName:"Nathalie"},
+        ];
 
 interface GameProps {
   settingsData: SettingsData;
@@ -36,10 +58,10 @@ export function Game({ settingsData, updateSettings }: GameProps) {
     [settingsData.shiftDayCount]
   );
 
-  const countryInputRef = useRef<HTMLInputElement>(null);
+  const cityInputRef = useRef<HTMLInputElement>(null);
 
   const [todays, addGuess, randomAngle, imageScale] = useTodays(dayString);
-  const { country, guesses } = todays;
+  const { city, guesses } = todays;
 
   const [currentGuess, setCurrentGuess] = useState("");
   const [hideImageMode, setHideImageMode] = useMode(
@@ -59,31 +81,26 @@ export function Game({ settingsData, updateSettings }: GameProps) {
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
-      if (country == null) {
+      if (city == null) {
         return;
       }
       e.preventDefault();
-      const guessedCountry = countries.find(
-        (country) =>
-          sanitizeCountryName(
-            getCountryName(i18n.resolvedLanguage, country)
-          ) === sanitizeCountryName(currentGuess)
+      const guessedCity = cities.find(
+        (city) =>
+          sanitizeCityName(
+            getCityName(i18n.resolvedLanguage, city)
+          ) === sanitizeCityName(currentGuess)
       );
 
-      if (guessedCountry == null) {
-        toast.error(t("unknownCountry"));
+      if (guessedCity == null) {
+        toast.error(t("unknownCity"));
         return;
       }
 
       const newGuess = {
         name: currentGuess,
-        distance: geolib.getDistance(guessedCountry, country),
-        direction: geolib.getCompassDirection(
-          guessedCountry,
-          country,
-          (origin, dest) =>
-            Math.round(geolib.getRhumbLineBearing(origin, dest) / 45) * 45
-        ),
+        distance: geolib.getDistance(guessedCity, city),
+        direction: getCompassDirection(guessedCity, city),
       };
 
       addGuess(newGuess);
@@ -93,19 +110,40 @@ export function Game({ settingsData, updateSettings }: GameProps) {
         toast.success(t("welldone"), { delay: 2000 });
       }
     },
-    [addGuess, country, currentGuess, i18n.resolvedLanguage, t]
+    [addGuess, city, currentGuess, i18n.resolvedLanguage, t]
   );
+
+  function getCompassDirection(origin: City, dest: City) {
+      var ewdirection = ""
+      if (origin.latitude < dest.latitude) {
+        ewdirection = "E"
+      }
+      if (dest.latitude < origin.latitude) {
+        ewdirection = "W"
+      }
+
+      var nsdirection = ""
+      if (origin.longitude < dest.longitude) {
+        nsdirection = "N"
+      }
+      if (dest.longitude < origin.longitude) {
+        nsdirection = "S"
+      }
+
+      var direction= nsdirection + ewdirection
+      return direction as Direction;
+  };
 
   useEffect(() => {
     let toastId: ReactText;
-    const { country, guesses } = todays;
+    const { city, guesses } = todays;
     if (
-      country &&
+      city &&
       guesses.length === MAX_TRY_COUNT &&
       guesses[guesses.length - 1].distance > 0
     ) {
       toastId = toast.info(
-        getCountryName(i18n.resolvedLanguage, country).toUpperCase(),
+        getCityName(i18n.resolvedLanguage, city).toUpperCase(),
         {
           autoClose: false,
           delay: 2000,
@@ -129,11 +167,32 @@ export function Game({ settingsData, updateSettings }: GameProps) {
           onClick={() => setHideImageMode(false)}
         >
           <Twemoji
-            text={t("showCountry")}
+            text={t("showCity")}
             options={{ className: "inline-block" }}
           />
         </button>
       )}
+      <br></br>
+      <table>
+        <thead>
+          <tr>
+            <th>Candidat</th>
+            <th>Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+          city?.c.map((value, index) => {
+          return (
+          <tr className={value.n.replace(" ", "").toLowerCase()}>
+            <td>{candidates.filter((c) => c.name == value.n)[0]?.firstName} {value.n}</td>
+            <td>{value.r}%</td>
+          </tr>
+          )
+          })}
+        </tbody>
+      </table>
+      <br></br>
       <div className="flex my-1">
         {settingsData.allowShiftingDay && settingsData.shiftDayCount > 0 && (
           <button
@@ -147,20 +206,6 @@ export function Game({ settingsData, updateSettings }: GameProps) {
             <Twemoji text="↪️" className="text-xl" />
           </button>
         )}
-        <img
-          className={`pointer-events-none max-h-52 m-auto transition-transform duration-700 ease-in dark:invert ${
-            hideImageMode && !gameEnded ? "h-0" : "h-full"
-          }`}
-          alt="country to guess"
-          src={`images/flags/${country?.code.toLowerCase()}.svg`}
-          style={
-            rotationMode && !gameEnded
-              ? {
-                  transform: `rotate(${randomAngle}deg) scale(${imageScale})`,
-                }
-              : {}
-          }
-        />
         {settingsData.allowShiftingDay && settingsData.shiftDayCount < 7 && (
           <button
             type="button"
@@ -174,26 +219,14 @@ export function Game({ settingsData, updateSettings }: GameProps) {
           </button>
         )}
       </div>
-      {rotationMode && !hideImageMode && !gameEnded && (
-        <button
-          className="border-2 uppercase mb-2 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-slate-800 dark:active:bg-slate-700"
-          type="button"
-          onClick={() => setRotationMode(false)}
-        >
-          <Twemoji
-            text={t("cancelRotation")}
-            options={{ className: "inline-block" }}
-          />
-        </button>
-      )}
       <Guesses
         rowCount={MAX_TRY_COUNT}
         guesses={guesses}
         settingsData={settingsData}
-        countryInputRef={countryInputRef}
+        cityInputRef={cityInputRef}
       />
       <div className="my-2">
-        {gameEnded && country ? (
+        {gameEnded && city ? (
           <>
             <Share
               guesses={guesses}
@@ -204,10 +237,10 @@ export function Game({ settingsData, updateSettings }: GameProps) {
             />
             <a
               className="underline w-full text-center block mt-4"
-              href={`https://www.google.com/maps?q=${getCountryName(
+              href={`https://www.google.com/maps?q=${getCityName(
                 i18n.resolvedLanguage,
-                country
-              )}+${country.code.toUpperCase()}&hl=${i18n.resolvedLanguage}`}
+                city
+              )}+${city.code.toUpperCase()}&hl=${i18n.resolvedLanguage}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -220,8 +253,8 @@ export function Game({ settingsData, updateSettings }: GameProps) {
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col">
-              <CountryInput
-                inputRef={countryInputRef}
+              <CityInput
+                inputRef={cityInputRef}
                 currentGuess={currentGuess}
                 setCurrentGuess={setCurrentGuess}
               />
@@ -230,7 +263,7 @@ export function Game({ settingsData, updateSettings }: GameProps) {
                 type="submit"
               >
                 <Twemoji
-                  text="🌍"
+                  text="🇫🇷"
                   options={{ className: "inline-block" }}
                   className="flex items-center justify-center"
                 />{" "}

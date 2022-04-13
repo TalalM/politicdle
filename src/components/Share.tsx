@@ -12,7 +12,8 @@ import { Guess } from "../domain/guess";
 import React from "react";
 import { SettingsData } from "../hooks/useSettings";
 
-const START_DATE = DateTime.fromISO("2022-03-18");
+const START_DATE = DateTime.fromISO("2022-04-13");
+const START_HOUR = 5;
 
 interface ShareProps {
   guesses: Guess[];
@@ -36,11 +37,16 @@ export function Share({
     const win = guesses[guesses.length - 1]?.distance === 0;
     const bestDistance = Math.min(...guesses.map(({ distance }) => distance));
     const guessCount = win ? guesses.length : "X";
-    const dayCount = Math.floor(
-      Interval.fromDateTimes(START_DATE, DateTime.fromISO(dayString)).length(
+    const day = dayString.substr(0,10)
+    const hour = parseInt(dayString.substr(11,1))
+    const dayDiff= 8*Math.floor(
+        Interval.fromDateTimes(START_DATE, DateTime.fromISO(day)).length(
         "day"
-      )
+        )
     );
+    const hourDiff = hour - START_HOUR
+    const cnt= dayDiff + hourDiff
+    const dayCount = dayDiff + hourDiff;
     const difficultyModifierEmoji = hideImageMode
       ? " 🙈"
       : rotationMode
@@ -49,7 +55,7 @@ export function Share({
     const bestPercent = `(${computeProximityPercent(
       bestDistance
     ).toString()}%)`;
-    const title = `#Flagdle #${dayCount} ${guessCount}/6 ${bestPercent}${difficultyModifierEmoji}`;
+    const title = `#Politicdle #${dayCount} ${guessCount}/8 ${bestPercent}${difficultyModifierEmoji}`;
 
     const guessString = guesses
       .map((guess) => {

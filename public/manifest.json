@@ -1,6 +1,6 @@
 {
-  "short_name": "Flagdle",
-  "name": "Wordle like game with country flags",
+  "short_name": "Politicdle",
+  "name": "Wordle like game with political results",
   "icons": [
     {
       "src": "favicon.ico",

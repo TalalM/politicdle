@@ -22,3 +22,61 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+table, tr, td, th {
+  border: 1px solid black;
+  text-align: center;
+}
+
+.macron {
+  background-color: #F4C543;
+}
+
+.mélenchon {
+  background-color: #AF2C24;
+  color: white;
+}
+
+.lepen {
+  background-color: #1B2661;
+  color: white;
+}
+
+.pécresse {
+  background-color: #255589;
+  color: white;
+}
+
+.zemmour {
+  background-color: #5D5D5D;
+  color: white;
+}
+
+.jadot {
+  background-color: #8F952F;
+}
+
+.dupont-aignan {
+  background-color: #151E4A;
+  color: white;
+}
+
+.lassalle {
+  background-color: #6E6B6C;
+}
+
+.roussel {
+  background-color: #A0231D;
+}
+
+.hidalgo {
+  background-color: #D76C92;
+}
+
+.poutou {
+  background-color: #B32D25;
+}
+
+.arthaud {
+  background-color: #AF312B;
+}
