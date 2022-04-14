@@ -97,10 +97,11 @@ export function Game({ settingsData, updateSettings }: GameProps) {
         return;
       }
 
+      const distance= geolib.getDistance(guessedCity, city)
       const newGuess = {
         name: currentGuess,
-        distance: geolib.getDistance(guessedCity, city),
-        direction: getCompassDirection(guessedCity, city),
+        distance: distance,
+        direction: getCompassDirection(guessedCity, city, distance),
       };
 
       addGuess(newGuess);
@@ -113,24 +114,46 @@ export function Game({ settingsData, updateSettings }: GameProps) {
     [addGuess, city, currentGuess, i18n.resolvedLanguage, t]
   );
 
-  function getCompassDirection(origin: City, dest: City) {
+  function getCompassDirection(origin: City, dest: City, distance: Number) {
+      var offset = distance >= 100_000 ? 0.5 : 0.1
       var ewdirection = ""
-      if (origin.latitude < dest.latitude) {
+      if (origin.latitude + offset < dest.latitude) {
         ewdirection = "E"
       }
-      if (dest.latitude < origin.latitude) {
+      if (dest.latitude + offset < origin.latitude) {
         ewdirection = "W"
       }
 
       var nsdirection = ""
-      if (origin.longitude < dest.longitude) {
+      if (origin.longitude + offset < dest.longitude) {
         nsdirection = "N"
       }
-      if (dest.longitude < origin.longitude) {
+      if (dest.longitude + offset < origin.longitude) {
         nsdirection = "S"
       }
 
-      var direction= nsdirection + ewdirection
+      var direction = nsdirection + ewdirection
+
+      if (direction == "") {
+        var latDiff = Math.abs(origin.latitude - dest.latitude)
+        var lonDiff = Math.abs(origin.longitude- dest.longitude)
+        if (latDiff > lonDiff) {
+          if (origin.latitude < dest.latitude) {
+            direction = "E"
+          }
+          if (dest.latitude < origin.latitude) {
+            direction = "W"
+          }
+        } else {
+          if (origin.longitude < dest.longitude) {
+            direction = "N"
+          }
+          if (dest.longitude < origin.longitude) {
+            direction = "S"
+          }
+        }
+      }
+
       return direction as Direction;
   };
 
