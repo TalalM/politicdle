@@ -43,7 +43,7 @@ const candidates: Person[] = [
         {name:"DUPONT-AIGNAN", firstName:"Nicolas"},
         {name:"POUTOU", firstName:"Philippe"},
         {name:"HIDALGO", firstName:"Anne"},
-        {name:"Arthaud", firstName:"Nathalie"},
+        {name:"ARTHAUD", firstName:"Nathalie"},
         ];
 
 interface GameProps {
