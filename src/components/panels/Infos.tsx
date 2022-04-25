@@ -21,11 +21,10 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
           Devinez le <Politicdle /> en 8 essais.
         </div>
         <div>
-          Il s'agit de deviner la ville qui a eu les résultats affichés lors du premier tour de
-          l'élection présidentielle de 2022.
+          Il s'agit de deviner la ville qui a eu les résultats affichés lors de l'élection présidentielle de 2022.
         </div>
         <div>Chaque essai doit être une ville valide.
-          Seules les villes ayant eu au moins 10.000 votes exprimés sont valides (pour information, il y en a 459).<br/>
+          Seules les villes ayant eu au moins 10.000 votes exprimés lors du premier tour sont valides (pour information, il y en a 459).<br/>
           Après chaque essai, vous aurez la distance, la direction et la
           proximité entre votre essai et la ville cible.
         </div>

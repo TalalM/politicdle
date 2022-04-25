@@ -195,7 +195,7 @@ export function Game({ settingsData, updateSettings }: GameProps) {
           />
         </button>
       )}
-      <br></br>
+      <h1>Premier tour</h1>
       <table>
         <thead>
           <tr>
@@ -206,6 +206,27 @@ export function Game({ settingsData, updateSettings }: GameProps) {
         <tbody>
           {
           city?.c.map((value, index) => {
+          return (
+          <tr className={value.n.replace(" ", "").toLowerCase()}>
+            <td>{candidates.filter((c) => c.name == value.n)[0]?.firstName} {value.n}</td>
+            <td>{value.r}%</td>
+          </tr>
+          )
+          })}
+        </tbody>
+      </table>
+      <br></br>
+      <h1>Deuxième tour</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Candidat</th>
+            <th>Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+          city?.c2.map((value, index) => {
           return (
           <tr className={value.n.replace(" ", "").toLowerCase()}>
             <td>{candidates.filter((c) => c.name == value.n)[0]?.firstName} {value.n}</td>
